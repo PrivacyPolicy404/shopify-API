@@ -28,7 +28,7 @@ export class Mapper {
           id: variant.id,
           name: raw.title,
           sku: variant.sku,
-          parentProductId, // This will always have a value now
+          parentProductId,
           location: locationQuantities,
         });
       }
