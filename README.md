@@ -28,7 +28,7 @@ A TypeScript application that integrates with Shopify's GraphQL API to fetch and
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/PrivacyPolicy404/shopify-API#
 cd shopify
 ```
 
