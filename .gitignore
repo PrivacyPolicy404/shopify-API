@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment
+.env
+.env.development
+.env.production
+.env.test
+
+# Build output
+dist/
+
+# Test coverage
+coverage/
+
+# IDE and editor files
+.vscode/
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
