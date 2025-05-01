@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+
 import { InventoryService } from '../services/inventory.service';
 
 /**
@@ -14,7 +15,7 @@ export class InventoryController {
    * @returns Promise<void>
    * @throws Will throw an error if the inventory service fails
    */
-  async getProductInventory(req: Request, res: Response): Promise<void> {
+  public async getProductInventory(req: Request, res: Response): Promise<void> {
     try {
       const inventory = await this.inventoryService.getProductInventory(req.params.productId);
       res.json(inventory);

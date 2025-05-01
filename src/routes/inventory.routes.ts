@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { InventoryController } from '../controllers/inventory.controller';
-import { InventoryService } from '../services/inventory.service';
-import { GraphQLRepository } from '../repositories/graphql.repository';
-import { Mapper } from '../utils/mapper.utils';
+
 import { config } from '../config/config';
+import { InventoryController } from '../controllers/inventory.controller';
+import { GraphQLRepository } from '../repositories/graphql.repository';
+import { InventoryService } from '../services/inventory.service';
+import { Mapper } from '../utils/mapper.utils';
 
 export class InventoryRoutes {
   public router: Router;

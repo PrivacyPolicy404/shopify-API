@@ -8,6 +8,9 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "sourceMap": true // for debugging
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "strictPropertyInitialization": true,
+    "noImplicitOverride": true
   }
 }

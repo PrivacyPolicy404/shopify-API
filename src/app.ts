@@ -1,8 +1,9 @@
-import express, { Request, Response, NextFunction } from 'express';
 import * as dotenv from 'dotenv';
-import { ProductRoutes } from './routes/product.routes';
-import { LocationRoutes } from './routes/location.routes';
+import express, { Request, Response, NextFunction } from 'express';
+
 import { InventoryRoutes } from './routes/inventory.routes';
+import { LocationRoutes } from './routes/location.routes';
+import { ProductRoutes } from './routes/product.routes';
 
 dotenv.config();
 

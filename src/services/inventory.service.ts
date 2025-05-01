@@ -9,7 +9,7 @@ export class InventoryService {
    * @param productId The ID of the product to get inventory for
    * @returns Promise<Inventory[]> Array of inventory information per location
    */
-  async getProductInventory(productId: string): Promise<Inventory[]> {
+  public async getProductInventory(productId: string): Promise<Inventory[]> {
     try {
       const inventory = await this.graphql.getProductInventory(productId);
       return inventory;

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+
 import { LocationService } from '../services/location.service';
 
 /**
@@ -14,7 +15,7 @@ export class LocationController {
    * @returns Promise<void>
    * @throws Will throw an error if the location service fails
    */
-  async getAll(req: Request, res: Response): Promise<void> {
+  public async getAll(req: Request, res: Response): Promise<void> {
     try {
       const locations = await this.locationService.getLocations();
       res.json(locations);
@@ -31,7 +32,7 @@ export class LocationController {
    * @returns Promise<void>
    * @throws Will throw an error if the location service fails
    */
-  async getById(req: Request, res: Response): Promise<void> {
+  public async getById(req: Request, res: Response): Promise<void> {
     try {
       const location = await this.locationService.getLocationById(req.params.id);
       if (location) {

@@ -1,6 +1,6 @@
-import { LocationService } from '../../services/location.service';
-import { GraphQLRepository } from '../../repositories/graphql.repository';
 import { Location } from '../../interfaces/location.interface';
+import { GraphQLRepository } from '../../repositories/graphql.repository';
+import { LocationService } from '../../services/location.service';
 import { Mapper } from '../../utils/mapper.utils';
 
 jest.mock('../../repositories/graphql.repository');
@@ -37,7 +37,7 @@ describe('LocationService', () => {
 
       // Assert
       expect(result).toEqual(mockLocations);
-      expect(mockRepository.getLocations).toHaveBeenCalledTimes(1);
+      expect(() => mockRepository.getLocations()).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error when repository fails', async () => {
@@ -61,7 +61,7 @@ describe('LocationService', () => {
 
       // Assert
       expect(result).toEqual(mockLocations[0]);
-      expect(mockRepository.getLocations).toHaveBeenCalledTimes(1);
+      expect(() => mockRepository.getLocations()).toHaveBeenCalledTimes(1);
     });
 
     it('should return undefined when location is not found', async () => {
@@ -74,7 +74,7 @@ describe('LocationService', () => {
 
       // Assert
       expect(result).toBeUndefined();
-      expect(mockRepository.getLocations).toHaveBeenCalledTimes(1);
+      expect(() => mockRepository.getLocations()).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error when repository fails', async () => {

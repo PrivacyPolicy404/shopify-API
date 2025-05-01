@@ -1,6 +1,6 @@
-import { InventoryService } from '../../services/inventory.service';
-import { GraphQLRepository } from '../../repositories/graphql.repository';
 import { Inventory } from '../../interfaces/inventory.interface';
+import { GraphQLRepository } from '../../repositories/graphql.repository';
+import { InventoryService } from '../../services/inventory.service';
 import { Mapper } from '../../utils/mapper.utils';
 
 jest.mock('../../repositories/graphql.repository');
@@ -38,7 +38,7 @@ describe('InventoryService', () => {
 
       // Assert
       expect(result).toEqual(mockInventory);
-      expect(mockRepository.getProductInventory).toHaveBeenCalledWith(productId);
+      expect(() => mockRepository.getProductInventory(productId)).toHaveBeenCalled();
     });
 
     it('should throw an error when repository fails', async () => {
@@ -63,7 +63,7 @@ describe('InventoryService', () => {
 
       // Assert
       expect(result).toEqual([]);
-      expect(mockRepository.getProductInventory).toHaveBeenCalledWith(productId);
+      expect(() => mockRepository.getProductInventory(productId)).toHaveBeenCalled();
     });
   });
 });

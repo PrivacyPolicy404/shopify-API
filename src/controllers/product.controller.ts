@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+
 import { ProductService } from '../services/product.service';
 
 /**
@@ -14,7 +15,7 @@ export class ProductController {
    * @returns Promise<void>
    * @throws Will throw an error if the product service fails
    */
-  async getAll(req: Request, res: Response): Promise<void> {
+  public async getAll(req: Request, res: Response): Promise<void> {
     try {
       const products = await this.productService.getAll();
       res.json(products);
@@ -31,7 +32,7 @@ export class ProductController {
    * @returns Promise<void>
    * @throws Will throw an error if the product service fails
    */
-  async getById(req: Request, res: Response): Promise<void> {
+  public async getById(req: Request, res: Response): Promise<void> {
     try {
       const product = await this.productService.getById(req.params.id);
       if (product) {

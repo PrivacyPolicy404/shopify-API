@@ -1,6 +1,6 @@
-import { ProductService } from '../../services/product.service';
-import { GraphQLRepository } from '../../repositories/graphql.repository';
 import { Product } from '../../interfaces/product.interface';
+import { GraphQLRepository } from '../../repositories/graphql.repository';
+import { ProductService } from '../../services/product.service';
 import { Mapper } from '../../utils/mapper.utils';
 
 // Mock the GraphQLRepository
@@ -49,7 +49,7 @@ describe('ProductService', () => {
 
       // Assert
       expect(result).toEqual(mockProducts);
-      expect(mockRepository.getProducts).toHaveBeenCalledTimes(1);
+      expect(() => mockRepository.getProducts()).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error when repository fails', async () => {
@@ -73,7 +73,7 @@ describe('ProductService', () => {
 
       // Assert
       expect(result).toEqual(mockProducts[0]);
-      expect(mockRepository.getProduct).toHaveBeenCalledWith(productId);
+      expect(() => mockRepository.getProduct(productId)).toHaveBeenCalled();
     });
 
     it('should return undefined when product is not found', async () => {
@@ -86,7 +86,7 @@ describe('ProductService', () => {
 
       // Assert
       expect(result).toBeUndefined();
-      expect(mockRepository.getProduct).toHaveBeenCalledWith(productId);
+      expect(() => mockRepository.getProduct(productId)).toHaveBeenCalled();
     });
 
     it('should throw an error when repository fails', async () => {

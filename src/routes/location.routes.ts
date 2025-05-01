@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { LocationController } from '../controllers/location.controller';
-import { LocationService } from '../services/location.service';
-import { GraphQLRepository } from '../repositories/graphql.repository';
-import { Mapper } from '../utils/mapper.utils';
+
 import { config } from '../config/config';
+import { LocationController } from '../controllers/location.controller';
+import { GraphQLRepository } from '../repositories/graphql.repository';
+import { LocationService } from '../services/location.service';
+import { Mapper } from '../utils/mapper.utils';
 
 export class LocationRoutes {
   public router: Router;

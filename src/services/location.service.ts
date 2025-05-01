@@ -1,5 +1,5 @@
-import { GraphQLRepository } from '../repositories/graphql.repository';
 import { Location } from '../interfaces/location.interface';
+import { GraphQLRepository } from '../repositories/graphql.repository';
 
 export class LocationService {
   constructor(private readonly graphQLRepository: GraphQLRepository) {}
@@ -8,7 +8,7 @@ export class LocationService {
    * Get all available locations from Shopify
    * @returns Promise<Location[]> Array of locations with their IDs and names
    */
-  async getLocations(): Promise<Location[]> {
+  public async getLocations(): Promise<Location[]> {
     try {
       const locations = await this.graphQLRepository.getLocations();
       return locations;
@@ -24,7 +24,7 @@ export class LocationService {
    * @param id The location ID to search for
    * @returns Promise<Location | undefined> The location if found, undefined otherwise
    */
-  async getLocationById(id: string): Promise<Location | undefined> {
+  public async getLocationById(id: string): Promise<Location | undefined> {
     try {
       const locations = await this.graphQLRepository.getLocations();
       return locations.find((location) => location.id === id);
@@ -39,7 +39,7 @@ export class LocationService {
    * @param id The location ID to validate
    * @returns Promise<boolean> True if the location exists, false otherwise
    */
-  async validateLocationId(id: string): Promise<boolean> {
+  public async validateLocationId(id: string): Promise<boolean> {
     try {
       const location = await this.getLocationById(id);
       return !!location;

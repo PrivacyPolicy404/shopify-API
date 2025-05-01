@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { ProductController } from '../controllers/product.controller';
-import { ProductService } from '../services/product.service';
-import { GraphQLRepository } from '../repositories/graphql.repository';
-import { Mapper } from '../utils/mapper.utils';
+
 import { config } from '../config/config';
+import { ProductController } from '../controllers/product.controller';
+import { GraphQLRepository } from '../repositories/graphql.repository';
+import { ProductService } from '../services/product.service';
+import { Mapper } from '../utils/mapper.utils';
 
 export class ProductRoutes {
   public router: Router;

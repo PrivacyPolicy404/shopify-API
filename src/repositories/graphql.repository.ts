@@ -1,9 +1,10 @@
 import fetch from 'node-fetch';
-import { Mapper } from '../utils/mapper.utils';
+
 import * as queries from './graphql.queries';
-import { Product } from '../interfaces/product.interface';
-import { Location } from '../interfaces/location.interface';
 import { Inventory } from '../interfaces/inventory.interface';
+import { Location } from '../interfaces/location.interface';
+import { Product } from '../interfaces/product.interface';
+import { Mapper } from '../utils/mapper.utils';
 
 /**
  * Interface for GraphQL request options
@@ -12,7 +13,7 @@ interface GraphQLRequestOptions {
   /** The GraphQL query string */
   query: string;
   /** Optional variables for the GraphQL query */
-  variables?: Record<string, any>;
+  variables?: Record<string, unknown>;
 }
 
 /**
@@ -59,26 +60,31 @@ export class GraphQLRepository {
       }),
     });
 
-    const json = await response.json();
+    const json = (await response.json()) as { data?: T; errors?: Array<{ message: string }> };
 
     if (json.errors) {
       throw new Error(JSON.stringify(json.errors, null, 2));
     }
 
+    if (!json.data) {
+      throw new Error('No data received from GraphQL query');
+    }
     return json.data;
   }
 
   /**
-   * Retrieves all products with their variants and inventory information
+   * Retrieves all products with their variants and location/inventory information
    * @returns Promise containing an array of mapped Product objects
    * @throws Will throw an error if the products query fails
    */
-  async getProducts(): Promise<Product[]> {
+  public async getProducts(): Promise<Product[]> {
     try {
       const query = queries.GET_PRODUCTS;
       const variables = { first: 10 };
-      const data = await this.request<{ products: any }>({ query, variables });
-      const products = data.products.edges.map((edge: { node: any }) => edge.node);
+      const data = await this.request<{
+        products: { edges: Array<{ node: Record<string, unknown> }> };
+      }>({ query, variables });
+      const products = data.products.edges.map(({ node }) => node);
       return this.mapper.mapProductVariants(products);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
@@ -87,16 +93,16 @@ export class GraphQLRepository {
   }
 
   /**
-   * Retrieves a specific product by ID with its variants and inventory
+   * Retrieves a specific product by ID with its variants and location/inventory
    * @param id - The Shopify product ID (in gid format)
    * @returns Promise containing an array with the mapped Product object
    * @throws Will throw an error if the product query fails
    */
-  async getProduct(id: string): Promise<Product[]> {
+  public async getProduct(id: string): Promise<Product[]> {
     try {
       const query = queries.GET_PRODUCT;
       const variables = { id };
-      const data = await this.request<{ product: any }>({ query, variables });
+      const data = await this.request<{ product: Record<string, unknown> }>({ query, variables });
       return this.mapper.mapProductVariants([data.product]);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
@@ -110,11 +116,11 @@ export class GraphQLRepository {
    * @returns Promise containing an array of mapped Inventory objects
    * @throws Will throw an error if the inventory query fails
    */
-  async getProductInventory(id: string): Promise<Inventory[]> {
+  public async getProductInventory(id: string): Promise<Inventory[]> {
     try {
       const query = queries.GET_PRODUCT_INVENTORY;
       const variables = { id };
-      const data = await this.request<{ product: any }>({ query, variables });
+      const data = await this.request<{ product: Record<string, unknown> }>({ query, variables });
       return this.mapper.mapInventory(data.product);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
@@ -127,14 +133,16 @@ export class GraphQLRepository {
    * @returns Promise containing an array of Location objects
    * @throws Will throw an error if the locations query fails
    */
-  async getLocations(): Promise<Location[]> {
+  public async getLocations(): Promise<Location[]> {
     try {
       const query = queries.GET_LOCATIONS;
       const variables = { first: 20 };
-      const data = await this.request<{ locations: any }>({ query, variables });
-      return data.locations.edges.map((edge: { node: any }) => ({
-        id: edge.node.id,
-        name: edge.node.name,
+      const data = await this.request<{
+        locations: { edges: Array<{ node: { id: string; name: string } }> };
+      }>({ query, variables });
+      return data.locations.edges.map(({ node }) => ({
+        id: node.id,
+        name: node.name,
       }));
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);

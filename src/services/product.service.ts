@@ -8,7 +8,7 @@ export class ProductService {
    * Get all products with their inventory information
    * @returns Promise<Product[]> Array of products with their details and inventory
    */
-  async getAll(): Promise<Product[]> {
+  public async getAll(): Promise<Product[]> {
     try {
       const products = await this.graphql.getProducts();
       return products;
@@ -23,7 +23,7 @@ export class ProductService {
    * @param id The product ID to search for
    * @returns Promise<Product | undefined> The product if found, undefined otherwise
    */
-  async getById(id: string): Promise<Product | undefined> {
+  public async getById(id: string): Promise<Product | undefined> {
     try {
       const product = await this.graphql.getProduct(id);
       return product[0]; // getProduct returns an array with one item
