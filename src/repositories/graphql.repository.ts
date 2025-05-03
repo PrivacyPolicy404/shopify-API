@@ -101,7 +101,7 @@ export class GraphQLRepository {
   public async getProduct(id: string): Promise<Product[]> {
     try {
       const query = queries.GET_PRODUCT;
-      const variables = { id };
+      const variables = { id: `gid://shopify/Product/${id}` };
       const data = await this.request<{ product: Record<string, unknown> }>({ query, variables });
       return this.mapper.mapProductVariants([data.product]);
     } catch (error) {
@@ -119,7 +119,7 @@ export class GraphQLRepository {
   public async getProductInventory(id: string): Promise<Inventory[]> {
     try {
       const query = queries.GET_PRODUCT_INVENTORY;
-      const variables = { id };
+      const variables = { id: `gid://shopify/Product/${id}` };
       const data = await this.request<{ product: Record<string, unknown> }>({ query, variables });
       return this.mapper.mapInventory(data.product);
     } catch (error) {

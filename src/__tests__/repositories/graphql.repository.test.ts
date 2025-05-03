@@ -179,9 +179,10 @@ describe('GraphQLRepository', () => {
 
       // Assert
       expect(mockedFetch).toHaveBeenCalled();
-      expect(() =>
-        mockMapper.mapProductVariants([mockGraphQLResponse.data.products.edges[0].node]),
-      ).toHaveBeenCalled();
+      // eslint-disable-next-line
+      expect(mockMapper.mapProductVariants).toHaveBeenCalledWith([
+        mockGraphQLResponse.data.products.edges[0].node,
+      ]);
       expect(result).toEqual(mappedProducts);
     });
   });
@@ -190,8 +191,9 @@ describe('GraphQLRepository', () => {
     it('should fetch and map a single product', async () => {
       // Arrange
       const productId = 'gid://shopify/Product/1';
-      const mockResponse = {
-        json: () => Promise.resolve(mockGraphQLResponse),
+      const mockProductNode = mockGraphQLResponse.data.products.edges[0].node;
+      const mockProductResponse = {
+        json: () => Promise.resolve({ data: { product: mockProductNode } }),
         ok: true,
         status: 200,
         statusText: 'OK',
@@ -202,9 +204,9 @@ describe('GraphQLRepository', () => {
         blob: () => Promise.resolve(new Blob([])),
         formData: () => Promise.resolve(new FormData()),
         text: () => Promise.resolve(''),
-        clone: () => mockResponse,
+        clone: () => mockProductResponse,
       } as unknown as import('node-fetch').Response;
-      mockedFetch.mockResolvedValue(mockResponse);
+      mockedFetch.mockResolvedValue(mockProductResponse);
       const mappedProducts: Product[] = [
         {
           id: '1',
@@ -220,9 +222,8 @@ describe('GraphQLRepository', () => {
 
       // Assert
       expect(mockedFetch).toHaveBeenCalled();
-      expect(() =>
-        mockMapper.mapProductVariants([mockGraphQLResponse.data.products.edges[0].node]),
-      ).toHaveBeenCalled();
+      // eslint-disable-next-line
+      expect(mockMapper.mapProductVariants).toHaveBeenCalledWith([mockProductNode]);
       expect(result).toEqual(mappedProducts);
     });
   });
@@ -264,8 +265,9 @@ describe('GraphQLRepository', () => {
     it('should fetch and map product inventory', async () => {
       // Arrange
       const productId = 'gid://shopify/Product/1';
-      const mockResponse = {
-        json: () => Promise.resolve(mockGraphQLResponse),
+      const mockProductNode = mockGraphQLResponse.data.products.edges[0].node;
+      const mockProductResponse = {
+        json: () => Promise.resolve({ data: { product: mockProductNode } }),
         ok: true,
         status: 200,
         statusText: 'OK',
@@ -276,9 +278,9 @@ describe('GraphQLRepository', () => {
         blob: () => Promise.resolve(new Blob([])),
         formData: () => Promise.resolve(new FormData()),
         text: () => Promise.resolve(''),
-        clone: () => mockResponse,
+        clone: () => mockProductResponse,
       } as unknown as import('node-fetch').Response;
-      mockedFetch.mockResolvedValue(Promise.resolve(mockResponse));
+      mockedFetch.mockResolvedValue(Promise.resolve(mockProductResponse));
 
       const mappedInventory: Inventory[] = [{ id: '1', quantity: 5 }];
       mockMapper.mapInventory = jest.fn().mockReturnValue(mappedInventory);
@@ -288,9 +290,8 @@ describe('GraphQLRepository', () => {
 
       // Assert
       expect(mockedFetch).toHaveBeenCalled();
-      expect(() =>
-        mockMapper.mapInventory(mockGraphQLResponse.data.products.edges[0].node),
-      ).toHaveBeenCalled();
+      // eslint-disable-next-line
+      expect(mockMapper.mapInventory).toHaveBeenCalledWith(mockProductNode);
       expect(result).toEqual(mappedInventory);
     });
   });

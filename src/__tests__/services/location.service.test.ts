@@ -30,20 +30,21 @@ describe('LocationService', () => {
   describe('getLocations', () => {
     it('should return all locations', async () => {
       // Arrange
-      mockRepository.getLocations = jest.fn().mockResolvedValue(mockLocations);
+      mockRepository.getLocations = jest.fn(() => Promise.resolve(mockLocations));
 
       // Act
       const result = await locationService.getLocations();
 
       // Assert
       expect(result).toEqual(mockLocations);
-      expect(() => mockRepository.getLocations()).toHaveBeenCalledTimes(1);
+      // eslint-disable-next-line
+      expect(mockRepository.getLocations).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error when repository fails', async () => {
       // Arrange
       const error = new Error('Repository error');
-      mockRepository.getLocations = jest.fn().mockRejectedValue(error);
+      mockRepository.getLocations = jest.fn(() => Promise.reject(error));
 
       // Act & Assert
       await expect(locationService.getLocations()).rejects.toThrow('Failed to fetch locations');
@@ -54,34 +55,36 @@ describe('LocationService', () => {
     it('should return a location by id', async () => {
       // Arrange
       const locationId = 'gid://shopify/Location/1';
-      mockRepository.getLocations = jest.fn().mockResolvedValue(mockLocations);
+      mockRepository.getLocations = jest.fn(() => Promise.resolve(mockLocations));
 
       // Act
       const result = await locationService.getLocationById(locationId);
 
       // Assert
       expect(result).toEqual(mockLocations[0]);
-      expect(() => mockRepository.getLocations()).toHaveBeenCalledTimes(1);
+      // eslint-disable-next-line
+      expect(mockRepository.getLocations).toHaveBeenCalledTimes(1);
     });
 
     it('should return undefined when location is not found', async () => {
       // Arrange
       const locationId = 'non-existent-id';
-      mockRepository.getLocations = jest.fn().mockResolvedValue(mockLocations);
+      mockRepository.getLocations = jest.fn(() => Promise.resolve(mockLocations));
 
       // Act
       const result = await locationService.getLocationById(locationId);
 
       // Assert
       expect(result).toBeUndefined();
-      expect(() => mockRepository.getLocations()).toHaveBeenCalledTimes(1);
+      // eslint-disable-next-line
+      expect(mockRepository.getLocations).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error when repository fails', async () => {
       // Arrange
       const locationId = 'gid://shopify/Location/1';
       const error = new Error('Repository error');
-      mockRepository.getLocations = jest.fn().mockRejectedValue(error);
+      mockRepository.getLocations = jest.fn(() => Promise.reject(error));
 
       // Act & Assert
       await expect(locationService.getLocationById(locationId)).rejects.toThrow(

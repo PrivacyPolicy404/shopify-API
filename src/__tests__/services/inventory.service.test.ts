@@ -31,21 +31,24 @@ describe('InventoryService', () => {
     it('should return inventory for a product', async () => {
       // Arrange
       const productId = 'gid://shopify/Product/1';
-      mockRepository.getProductInventory = jest.fn().mockResolvedValue(mockInventory);
+      mockRepository.getProductInventory = jest.fn((_productId: string) =>
+        Promise.resolve(mockInventory),
+      );
 
       // Act
       const result = await inventoryService.getProductInventory(productId);
 
       // Assert
       expect(result).toEqual(mockInventory);
-      expect(() => mockRepository.getProductInventory(productId)).toHaveBeenCalled();
+      // eslint-disable-next-line
+      expect(mockRepository.getProductInventory).toHaveBeenCalledWith(productId);
     });
 
     it('should throw an error when repository fails', async () => {
       // Arrange
       const productId = 'gid://shopify/Product/1';
       const error = new Error('Repository error');
-      mockRepository.getProductInventory = jest.fn().mockRejectedValue(error);
+      mockRepository.getProductInventory = jest.fn((_productId: string) => Promise.reject(error));
 
       // Act & Assert
       await expect(inventoryService.getProductInventory(productId)).rejects.toThrow(
@@ -56,14 +59,15 @@ describe('InventoryService', () => {
     it('should return empty array when no inventory is found', async () => {
       // Arrange
       const productId = 'gid://shopify/Product/1';
-      mockRepository.getProductInventory = jest.fn().mockResolvedValue([]);
+      mockRepository.getProductInventory = jest.fn((_productId: string) => Promise.resolve([]));
 
       // Act
       const result = await inventoryService.getProductInventory(productId);
 
       // Assert
       expect(result).toEqual([]);
-      expect(() => mockRepository.getProductInventory(productId)).toHaveBeenCalled();
+      // eslint-disable-next-line
+      expect(mockRepository.getProductInventory).toHaveBeenCalledWith(productId);
     });
   });
 });
